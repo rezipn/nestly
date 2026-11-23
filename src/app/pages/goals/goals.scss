@@ -39,3 +39,5 @@
 @keyframes grow { from { width: 0; } }
 @keyframes ringIn { from { stroke-dasharray: 0 163.36; } }
 @keyframes barUp { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+.loading { text-align: center; color: #8a7a68; padding: 24px; }

@@ -3,6 +3,8 @@
   <p>Tabungan berdua, tujuan bersama.</p>
 </header>
 
+@if (loading()) { <p class="loading">Memuat data…</p> }
+
 <main class="list">
   @for (g of goals(); track g.id; let i = $index) {
     <a class="card" [routerLink]="['/goal', g.id]" [style.animation-delay]="(i * 0.12) + 's'">

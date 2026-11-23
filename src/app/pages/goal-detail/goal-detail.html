@@ -1,39 +1,47 @@
-<header class="top">
-  <a routerLink="/" class="back">← Kembali</a>
-  <h1>{{ goal().name }}</h1>
-  <p class="amount">{{ rupiah(goal().saved) }} <span>dari {{ rupiah(goal().target) }}</span></p>
-  <div class="bar"><div class="fill" [style.width.%]="percent()" [style.background]="goal().color"></div></div>
-  <p class="meta">{{ percent() }}% tercapai · Target {{ goal().deadline }}</p>
-</header>
+@if (goal(); as g) {
+  <header class="top">
+    <a routerLink="/" class="back">← Kembali</a>
+    <h1>{{ g.name }}</h1>
+    <p class="amount">{{ rupiah(saved()) }} <span>dari {{ rupiah(g.target) }}</span></p>
+    <div class="bar"><div class="fill" [style.width.%]="percent()" [style.background]="g.color"></div></div>
+    <p class="meta">{{ percent() }}% tercapai · Target {{ g.deadline }}</p>
+  </header>
 
-<main>
-  <form class="form" [formGroup]="form" (ngSubmit)="add()">
-    <h2>Tambah Setoran</h2>
-    <label>Siapa?
-      <select formControlName="who">
-        <option>Rezi</option>
-        <option>Pasangan</option>
-      </select>
-    </label>
-    <label>Nominal
-      <input type="number" formControlName="amount" placeholder="500000">
-    </label>
-    <label>Catatan
-      <input type="text" formControlName="note" placeholder="Opsional">
-    </label>
-    <button type="submit" [disabled]="form.invalid">Simpan Setoran</button>
-  </form>
+  <main>
+    <form class="form" [formGroup]="form" (ngSubmit)="add()">
+      <h2>Tambah Setoran</h2>
+      <label>Siapa?
+        <select formControlName="who">
+          <option>Rezi</option>
+          <option>Pasangan</option>
+        </select>
+      </label>
+        <label>Nominal
+            <input type="text" inputmode="numeric" formControlName="amount" placeholder="500.000" (input)="formatAmount($event)">
+        </label>
+        <label>Catatan
+            <input type="text" formControlName="note" placeholder="Opsional">
+        </label>
+      <button type="submit" [disabled]="form.invalid || saving()">
+        {{ saving() ? 'Menyimpan…' : 'Simpan Setoran' }}
+      </button>
+    </form>
 
-  <section class="history">
-    <h2>Riwayat Setoran</h2>
-    @for (c of contributions(); track c.id) {
-      <div class="item">
-        <div>
-          <p class="who">{{ c.who }}</p>
-          <p class="date">{{ c.date }}{{ c.note ? ' · ' + c.note : '' }}</p>
+    <section class="history">
+      <h2>Riwayat Setoran</h2>
+      @for (c of contributions(); track c.id) {
+        <div class="item">
+          <div>
+            <p class="who">{{ c.who }}</p>
+            <p class="date">{{ dateOnly(c.created_at) }}{{ c.note ? ' · ' + c.note : '' }}</p>
+          </div>
+          <p class="amt">+{{ rupiah(c.amount) }}</p>
         </div>
-        <p class="amt">+{{ rupiah(c.amount) }}</p>
-      </div>
-    }
-  </section>
-</main>
+      } @empty {
+        <p class="date">Belum ada setoran.</p>
+      }
+    </section>
+  </main>
+} @else {
+  <p class="loading">Memuat…</p>
+}
