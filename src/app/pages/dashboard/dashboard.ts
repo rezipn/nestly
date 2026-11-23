@@ -1,5 +1,5 @@
 import { Component, signal, OnInit } from '@angular/core';
-import { fetchTransactions, fetchGoals, fetchContributions, TransactionRow } from '../../supabase';
+import { fetchTransactions, fetchGoals, fetchContributions, fetchPeople, TransactionRow } from '../../supabase';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +16,7 @@ export class Dashboard implements OnInit {
   byPerson = signal<{ who: string; amount: number }[]>([]);
   monthly = signal<{ month: string; income: number; expense: number }[]>([]);
   personDetails = signal<{ who: string; income: number; expense: number; categories: { category: string; amount: number }[] }[]>([]);
+  balances = signal<{ who: string; saldo: number }[]>([]);
 
   async ngOnInit() {
     const [tx, goals, contributions] = await Promise.all([
@@ -52,6 +53,13 @@ this.personDetails.set(peopleNames.map(who => {
     expense: mine.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0),
     categories: [...catMap2.entries()].map(([category, amount]) => ({ category, amount })).sort((a, b) => b.amount - a.amount),
   };
+}));
+
+const people = await fetchPeople();
+this.balances.set(people.map(p => {
+  const after = tx.filter(t => t.who === p.name && new Date(t.created_at) > new Date(p.balance_set_at));
+  const delta = after.reduce((s, t) => s + (t.type === 'income' ? t.amount : -t.amount), 0);
+  return { who: p.name, saldo: (p.balance || 0) + delta };
 }));
 
     this.monthly.set(this.last6Months(tx));

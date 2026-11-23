@@ -136,3 +136,11 @@ export async function deletePerson(id: number) {
   const { error } = await supabase.from('people').delete().eq('id', id);
   if (error) throw error;
 }
+
+export interface PersonRow { id: number; name: string; balance: number; balance_set_at: string; }
+
+export async function updatePersonBalance(id: number, balance: number) {
+  const { error } = await supabase.from('people')
+    .update({ balance, balance_set_at: new Date().toISOString() }).eq('id', id);
+  if (error) throw error;
+}

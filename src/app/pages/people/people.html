@@ -1,28 +1,38 @@
 <main class="wrap">
   <h1>Kelola Orang</h1>
-  <p class="sub">Nama-nama yang muncul di pilihan "Siapa".</p>
+  <p class="sub">Nama-nama yang muncul di pilihan "Siapa", plus saldo awal tiap orang.</p>
 
-  <form [formGroup]="form" (ngSubmit)="save()" class="card">
-    <label>{{ editingId() ? 'Edit Nama' : 'Tambah Orang' }}
-      <input type="text" formControlName="name" placeholder="Nama">
-    </label>
-    <button type="submit" class="save" [disabled]="form.invalid || saving()">
-      {{ saving() ? 'Menyimpan…' : (editingId() ? 'Simpan Perubahan' : 'Tambah') }}
-    </button>
-    @if (editingId()) {
-      <button type="button" class="cancel" (click)="cancelEdit()">Batal</button>
-    }
-  </form>
-
-  @if (loading()) { <p class="loading">Memuat data…</p> }
+  <section class="card form-card">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <label>Nama
+        <input type="text" formControlName="name" placeholder="Nama orang">
+      </label>
+      @if (editingId()) {
+        <label>Saldo sekarang (Rp)
+          <input type="text" inputmode="numeric" formControlName="balance" placeholder="1.000.000" (input)="formatAmount($event)">
+        </label>
+      }
+      <button type="submit" class="save" [disabled]="form.invalid || saving()">
+        {{ editingId() ? 'Simpan Perubahan' : 'Tambah Orang' }}
+      </button>
+      @if (editingId()) {
+        <button type="button" class="cancel" (click)="cancelEdit()">Batal</button>
+      }
+    </form>
+  </section>
 
   <section class="list">
-    @for (p of people(); track p.id; let i = $index) {
-      <article class="row" [style.animation-delay]="(i * 0.06) + 's'">
-        <p class="name">{{ p.name }}</p>
+    @for (p of people(); track p.id) {
+      <article class="row">
+        <div class="row-main">
+          <p class="cat">{{ p.name }}</p>
+          <p class="meta">Saldo awal: {{ rupiah(p.balance) }}</p>
+        </div>
         <button class="edit" (click)="edit(p)">Edit</button>
-        <button class="del" (click)="remove(p)">✕</button>
+        <button class="del" (click)="remove(p.id)">✕</button>
       </article>
+    } @empty {
+      <p class="empty">Belum ada orang.</p>
     }
   </section>
 </main>

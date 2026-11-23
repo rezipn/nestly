@@ -80,6 +80,16 @@
   } @empty {
     @if (!loading()) { <p class="empty">Belum ada data transaksi.</p> }
   }
+
+    <section class="cards">
+  @for (b of balances(); track b.who) {
+    <article class="sum saved">
+      <p class="lbl">Saldo {{ b.who }}</p>
+      <p class="val">{{ rupiah(b.saldo) }}</p>
+    </article>
+  }
+    </section>
+
 </section>
 
 </main>
