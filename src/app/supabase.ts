@@ -50,3 +50,8 @@ export async function insertContribution(goalId: number, who: string, amount: nu
   const { error } = await supabase.from('contributions').insert({ goal_id: goalId, who, amount, note });
   if (error) throw error;
 }
+
+export async function insertGoal(name: string, target: number, deadline: string, color: string) {
+  const { error } = await supabase.from('goals').insert({ name, target, deadline, color });
+  if (error) throw error;
+}

@@ -1,0 +1,30 @@
+<header class="top">
+  <a routerLink="/" class="back">← Kembali</a>
+  <h1>Goal Baru</h1>
+</header>
+
+<main>
+  <form class="form" [formGroup]="form" (ngSubmit)="save()">
+    <label>Nama goal
+      <input type="text" formControlName="name" placeholder="mis. Liburan Bali">
+    </label>
+    <label>Target nominal
+      <input type="text" inputmode="numeric" formControlName="target" placeholder="10.000.000" (input)="formatAmount($event)">
+    </label>
+    <label>Deadline
+      <input type="date" formControlName="deadline">
+    </label>
+    <label>Warna
+      <div class="colors">
+        @for (c of colors; track c) {
+          <button type="button" class="dot" [style.background]="c"
+            [class.selected]="form.value.color === c"
+            (click)="form.controls.color.setValue(c)"></button>
+        }
+      </div>
+    </label>
+    <button type="submit" [disabled]="form.invalid || saving()">
+      {{ saving() ? 'Menyimpan…' : 'Buat Goal' }}
+    </button>
+  </form>
+</main>
