@@ -1,0 +1,53 @@
+<main class="wrap">
+  <h1>Transaksi</h1>
+  <p class="sub">Pemasukan & pengeluaran berdua.</p>
+
+  <section class="card form-card">
+    <div class="type-toggle">
+      <button type="button" [class.active]="type() === 'expense'" (click)="setType('expense')">Pengeluaran</button>
+      <button type="button" [class.active]="type() === 'income'" (click)="setType('income')">Pemasukan</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="add()">
+      <label>Kategori
+        <select formControlName="category">
+          @for (c of categories[type()]; track c) { <option [value]="c">{{ c }}</option> }
+        </select>
+      </label>
+      <label>Siapa
+        <select formControlName="who">
+          <option value="Rezi">Rezi</option>
+          <option value="Pasangan">Pasangan</option>
+        </select>
+      </label>
+      <label>Nominal (Rp)
+        <input type="text" inputmode="numeric" formControlName="amount" placeholder="50.000" (input)="formatAmount($event)">
+      </label>
+      <label>Catatan
+        <input type="text" formControlName="note" placeholder="Opsional">
+      </label>
+      <button type="submit" class="save" [disabled]="form.invalid || saving()">
+        {{ saving() ? 'Menyimpan…' : 'Simpan Transaksi' }}
+      </button>
+    </form>
+  </section>
+
+  @if (loading()) { <p class="loading">Memuat data…</p> }
+
+  <section class="list">
+    @for (t of items(); track t.id; let i = $index) {
+      <article class="row" [style.animation-delay]="(i * 0.06) + 's'">
+        <div class="row-main">
+          <p class="cat">{{ t.category }} <span>· {{ t.who }}</span></p>
+          <p class="meta">{{ dateOnly(t.created_at) }}@if (t.note) { · {{ t.note }} }</p>
+        </div>
+        <p class="amt" [class.in]="t.type === 'income'">
+          {{ t.type === 'income' ? '+' : '−' }}{{ rupiah(t.amount) }}
+        </p>
+        <button class="del" (click)="remove(t.id)">✕</button>
+      </article>
+    } @empty {
+      @if (!loading()) { <p class="empty">Belum ada transaksi. Tambahkan yang pertama di atas.</p> }
+    }
+  </section>
+</main>

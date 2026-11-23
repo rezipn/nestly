@@ -1,0 +1,62 @@
+<main class="wrap">
+  <h1>Dashboard</h1>
+  <p class="sub">Ringkasan keuangan berdua bulan ini.</p>
+
+  @if (loading()) { <p class="loading">Memuat data…</p> }
+
+  <section class="cards">
+    <article class="sum in">
+      <p class="lbl">Pemasukan</p>
+      <p class="val">{{ rupiah(incomeMonth()) }}</p>
+    </article>
+    <article class="sum out">
+      <p class="lbl">Pengeluaran</p>
+      <p class="val">{{ rupiah(expenseMonth()) }}</p>
+    </article>
+    <article class="sum net">
+      <p class="lbl">Sisa Bulan Ini</p>
+      <p class="val">{{ rupiah(net()) }}</p>
+    </article>
+    <article class="sum saved">
+      <p class="lbl">Total Tabungan Goal</p>
+      <p class="val">{{ rupiah(totalSaved()) }}</p>
+    </article>
+  </section>
+
+  <section class="card">
+    <h3>Pemasukan vs Pengeluaran — 6 Bulan</h3>
+    <div class="chart">
+      @for (m of monthly(); track m.month; let i = $index) {
+        <div class="col">
+          <div class="pair">
+            <div class="colbar in" [style.height.%]="barHeight(m.income)" [style.animation-delay]="(i * 0.1) + 's'"></div>
+            <div class="colbar out" [style.height.%]="barHeight(m.expense)" [style.animation-delay]="(i * 0.1 + 0.05) + 's'"></div>
+          </div>
+          <span class="lbl">{{ m.month }}</span>
+        </div>
+      }
+    </div>
+    <p class="legend"><span class="dot in"></span> Pemasukan <span class="dot out"></span> Pengeluaran</p>
+  </section>
+
+  <section class="card">
+    <h3>Pengeluaran per Kategori — Bulan Ini</h3>
+    @for (c of byCategory(); track c.category) {
+      <div class="catrow">
+        <div class="cathead"><span>{{ c.category }}</span><span>{{ rupiah(c.amount) }}</span></div>
+        <div class="bar"><div class="fill" [style.width.%]="catWidth(c.amount)"></div></div>
+      </div>
+    } @empty {
+      @if (!loading()) { <p class="empty">Belum ada pengeluaran bulan ini.</p> }
+    }
+  </section>
+
+  <section class="card">
+    <h3>Pengeluaran per Orang — Bulan Ini</h3>
+    @for (p of byPerson(); track p.who) {
+      <div class="personrow"><span>{{ p.who }}</span><strong>{{ rupiah(p.amount) }}</strong></div>
+    } @empty {
+      @if (!loading()) { <p class="empty">Belum ada data.</p> }
+    }
+  </section>
+</main>

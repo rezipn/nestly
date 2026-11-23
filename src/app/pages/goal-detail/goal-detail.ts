@@ -1,7 +1,8 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { fetchGoalById, fetchContributionsByGoal, insertContribution, GoalRow, ContributionRow } from '../../supabase';
+import { fetchGoalById, fetchContributionsByGoal, insertContribution, deleteGoal, deleteContribution, GoalRow, ContributionRow } from '../../supabase';
+
 
 @Component({
   selector: 'app-goal-detail',
@@ -11,6 +12,7 @@ import { fetchGoalById, fetchContributionsByGoal, insertContribution, GoalRow, C
 })
 export class GoalDetail implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private fb = inject(FormBuilder);
 
   goalId = Number(this.route.snapshot.paramMap.get('id'));
@@ -65,4 +67,19 @@ parseAmount(): number {
   await this.load();
   this.saving.set(false);
   }
+  // import: tambahkan deleteGoal, deleteContribution
+// di dalam class:
+async removeContribution(id: number) {
+  if (!confirm('Hapus setoran ini?')) return;
+  await deleteContribution(id);
+  await this.load();
 }
+
+async removeGoal() {
+  if (!confirm('Hapus goal ini beserta semua setorannya?')) return;
+  await deleteGoal(this.goalId);
+  this.router.navigate(['/']);
+}
+
+}
+

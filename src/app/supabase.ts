@@ -55,3 +55,61 @@ export async function insertGoal(name: string, target: number, deadline: string,
   const { error } = await supabase.from('goals').insert({ name, target, deadline, color });
   if (error) throw error;
 }
+
+export async function signUp(email: string, password: string) {
+  const { error } = await supabase.auth.signUp({ email, password });
+  if (error) throw error;
+}
+
+export async function signIn(email: string, password: string) {
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) throw error;
+}
+
+export async function signOut() {
+  await supabase.auth.signOut();
+}
+
+export async function getSession() {
+  const { data } = await supabase.auth.getSession();
+  return data.session;
+}
+
+export async function deleteGoal(id: number) {
+  const { error } = await supabase.from('goals').delete().eq('id', id);
+  if (error) throw error;
+}
+
+export async function deleteContribution(id: number) {
+  const { error } = await supabase.from('contributions').delete().eq('id', id);
+  if (error) throw error;
+}
+
+export interface TransactionRow {
+  id: number;
+  type: 'income' | 'expense';
+  category: string;
+  who: string;
+  amount: number;
+  note: string;
+  created_at: string;
+}
+
+export async function fetchTransactions() {
+  const { data, error } = await supabase
+    .from('transactions')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data as TransactionRow[];
+}
+
+export async function insertTransaction(t: Omit<TransactionRow, 'id' | 'created_at'>) {
+  const { error } = await supabase.from('transactions').insert(t);
+  if (error) throw error;
+}
+
+export async function deleteTransaction(id: number) {
+  const { error } = await supabase.from('transactions').delete().eq('id', id);
+  if (error) throw error;
+}

@@ -1,1 +1,61 @@
-<p>login works!</p>
+<main class="wrap">
+    <div class="bg-anim" aria-hidden="true">
+  <span class="p s" style="left:3%;  animation-duration:12s; animation-delay:0s;"></span>
+  <span class="p coin m" style="left:8%;  animation-duration:15s; animation-delay:3s;"></span>
+  <span class="p m" style="left:13%; animation-duration:10s; animation-delay:1s;"></span>
+  <span class="p s" style="left:18%; animation-duration:14s; animation-delay:5s;"></span>
+  <span class="p coin s" style="left:23%; animation-duration:11s; animation-delay:2s;"></span>
+  <span class="p l" style="left:28%; animation-duration:16s; animation-delay:0.5s;"></span>
+  <span class="p s" style="left:33%; animation-duration:12s; animation-delay:4s;"></span>
+  <span class="p coin m" style="left:38%; animation-duration:13s; animation-delay:6s;"></span>
+  <span class="p m" style="left:43%; animation-duration:10s; animation-delay:2.5s;"></span>
+  <span class="p s" style="left:48%; animation-duration:15s; animation-delay:1.5s;"></span>
+  <span class="p coin s" style="left:53%; animation-duration:12s; animation-delay:4.5s;"></span>
+  <span class="p m" style="left:58%; animation-duration:14s; animation-delay:0s;"></span>
+  <span class="p s" style="left:63%; animation-duration:11s; animation-delay:3.5s;"></span>
+  <span class="p coin l" style="left:68%; animation-duration:17s; animation-delay:2s;"></span>
+  <span class="p m" style="left:73%; animation-duration:12s; animation-delay:5.5s;"></span>
+  <span class="p s" style="left:78%; animation-duration:13s; animation-delay:1s;"></span>
+  <span class="p coin m" style="left:83%; animation-duration:15s; animation-delay:4s;"></span>
+  <span class="p l" style="left:88%; animation-duration:11s; animation-delay:2.2s;"></span>
+  <span class="p s" style="left:92%; animation-duration:14s; animation-delay:0.8s;"></span>
+  <span class="p coin s" style="left:96%; animation-duration:12s; animation-delay:3.2s;"></span>
+  <span class="p s" style="left:11%; animation-duration:18s; animation-delay:7s;"></span>
+  <span class="p m" style="left:36%; animation-duration:19s; animation-delay:8s;"></span>
+  <span class="p s" style="left:61%; animation-duration:17s; animation-delay:6.5s;"></span>
+  <span class="p coin s" style="left:81%; animation-duration:18s; animation-delay:7.5s;"></span>
+</div>
+
+  <div class="card">
+    <div class="logo">
+      <svg viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="28" class="logo-ring" />
+        <path class="leaf" d="M32 46 C32 34 38 26 48 22 C48 34 42 43 32 46 Z" />
+        <path class="leaf leaf2" d="M32 46 C32 38 28 32 20 29 C20 38 24 44 32 46 Z" />
+        <path class="stem" d="M32 46 L32 52" />
+      </svg>
+    </div>
+    <h1>Nestly</h1>
+    <p class="sub">Tabungan berdua, tujuan bersama.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" [class.shake]="shake()" [class.slide]="animKey()">
+      <label class="field" style="animation-delay:.05s">Email
+        <input type="email" formControlName="email" placeholder="nama@email.com">
+      </label>
+      <label class="field" style="animation-delay:.15s">Password
+        <input type="password" formControlName="password" placeholder="Minimal 6 karakter">
+      </label>
+
+      @if (error()) { <p class="error">{{ error() }}</p> }
+
+      <button type="submit" class="field" style="animation-delay:.25s" [disabled]="form.invalid || loading()">
+        @if (loading()) { <span class="spinner"></span> Memproses… }
+        @else { {{ mode() === 'login' ? 'Masuk' : 'Daftar' }} }
+      </button>
+    </form>
+
+    <button class="toggle" (click)="toggle()">
+      {{ mode() === 'login' ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Masuk' }}
+    </button>
+  </div>
+</main>

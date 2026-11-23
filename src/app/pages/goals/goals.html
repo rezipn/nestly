@@ -1,7 +1,17 @@
 <header class="top fade-in">
-  <h1>Nestly</h1>
+  <div class="brand">
+    <svg class="brand-logo" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="28" class="logo-ring" />
+      <path class="leaf" d="M32 46 C32 34 38 26 48 22 C48 34 42 43 32 46 Z" />
+      <path class="leaf leaf2" d="M32 46 C32 38 28 32 20 29 C20 38 24 44 32 46 Z" />
+      <path class="stem" d="M32 46 L32 52" />
+    </svg>
+    <h1>Nestly</h1>
+  </div>
   <p>Tabungan berdua, tujuan bersama.</p>
+  <button class="logout" (click)="logout()">Keluar</button>
 </header>
+
 
 @if (loading()) { <p class="loading">Memuat data…</p> }
 

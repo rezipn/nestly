@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth-guard';
 
 export const routes: Routes = [
-  { path: '', loadComponent: () => import('./pages/goals/goals').then(m => m.Goals) },
+  { path: '', canActivate: [authGuard], loadComponent: () => import('./pages/goals/goals').then(m => m.Goals) },
   { path: 'login', loadComponent: () => import('./pages/login/login').then(m => m.Login) },
-  { path: 'goal/new', loadComponent: () => import('./pages/goal-new/goal-new').then(m => m.GoalNew) },
-  { path: 'goal/:id', loadComponent: () => import('./pages/goal-detail/goal-detail').then(m => m.GoalDetail) },
+  { path: 'goal/new', canActivate: [authGuard], loadComponent: () => import('./pages/goal-new/goal-new').then(m => m.GoalNew) },
+  { path: 'transaksi', canActivate: [authGuard], loadComponent: () => import('./pages/transactions/transactions').then(m => m.Transactions) },
+  { path: 'dashboard', canActivate: [authGuard], loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard) },
+  { path: 'goal/:id', canActivate: [authGuard], loadComponent: () => import('./pages/goal-detail/goal-detail').then(m => m.GoalDetail) },
 ];

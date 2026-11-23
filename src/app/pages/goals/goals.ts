@@ -1,6 +1,6 @@
-import { Component, signal, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { fetchGoals, fetchContributions, GoalRow, ContributionRow } from '../../supabase';
+import { Component, signal, OnInit, inject } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
+import { fetchGoals, fetchContributions, signOut, GoalRow, ContributionRow } from '../../supabase';
 
 interface Goal extends GoalRow { saved: number; }
 
@@ -14,6 +14,13 @@ export class Goals implements OnInit {
   goals = signal<Goal[]>([]);
   monthly = signal<{ month: string; amount: number }[]>([]);
   loading = signal(true);
+
+  private router = inject(Router);
+
+async logout() {
+  await signOut();
+  this.router.navigate(['/login']);
+}
 
   async ngOnInit() {
     const [goals, contributions] = await Promise.all([fetchGoals(), fetchContributions()]);

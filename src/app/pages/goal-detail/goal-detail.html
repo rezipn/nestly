@@ -36,11 +36,13 @@
             <p class="date">{{ dateOnly(c.created_at) }}{{ c.note ? ' · ' + c.note : '' }}</p>
           </div>
           <p class="amt">+{{ rupiah(c.amount) }}</p>
+          <button class="del" (click)="removeContribution(c.id)">✕</button>
         </div>
       } @empty {
         <p class="date">Belum ada setoran.</p>
       }
     </section>
+    <button class="danger" (click)="removeGoal()">Hapus Goal Ini</button>
   </main>
 } @else {
   <p class="loading">Memuat…</p>

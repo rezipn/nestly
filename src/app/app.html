@@ -1,1 +1,9 @@
 <router-outlet />
+
+@if (!isLogin()) {
+  <nav class="bottom-nav">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Tabungan</a>
+    <a routerLink="/transaksi" routerLinkActive="active">Transaksi</a>
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+  </nav>
+}
