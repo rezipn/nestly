@@ -1,0 +1,39 @@
+<header class="top">
+  <a routerLink="/" class="back">← Kembali</a>
+  <h1>{{ goal().name }}</h1>
+  <p class="amount">{{ rupiah(goal().saved) }} <span>dari {{ rupiah(goal().target) }}</span></p>
+  <div class="bar"><div class="fill" [style.width.%]="percent()" [style.background]="goal().color"></div></div>
+  <p class="meta">{{ percent() }}% tercapai · Target {{ goal().deadline }}</p>
+</header>
+
+<main>
+  <form class="form" [formGroup]="form" (ngSubmit)="add()">
+    <h2>Tambah Setoran</h2>
+    <label>Siapa?
+      <select formControlName="who">
+        <option>Rezi</option>
+        <option>Pasangan</option>
+      </select>
+    </label>
+    <label>Nominal
+      <input type="number" formControlName="amount" placeholder="500000">
+    </label>
+    <label>Catatan
+      <input type="text" formControlName="note" placeholder="Opsional">
+    </label>
+    <button type="submit" [disabled]="form.invalid">Simpan Setoran</button>
+  </form>
+
+  <section class="history">
+    <h2>Riwayat Setoran</h2>
+    @for (c of contributions(); track c.id) {
+      <div class="item">
+        <div>
+          <p class="who">{{ c.who }}</p>
+          <p class="date">{{ c.date }}{{ c.note ? ' · ' + c.note : '' }}</p>
+        </div>
+        <p class="amt">+{{ rupiah(c.amount) }}</p>
+      </div>
+    }
+  </section>
+</main>

@@ -1,0 +1,42 @@
+<header class="top fade-in">
+  <h1>Nestly</h1>
+  <p>Tabungan berdua, tujuan bersama.</p>
+</header>
+
+<main class="list">
+  @for (g of goals(); track g.id; let i = $index) {
+    <a class="card" [routerLink]="['/goal', g.id]" [style.animation-delay]="(i * 0.12) + 's'">
+      <div class="card-main">
+        <div class="info">
+          <h2>{{ g.name }}</h2>
+          <p class="amount">{{ rupiah(g.saved) }} <span>dari {{ rupiah(g.target) }}</span></p>
+          <p class="deadline">Target: {{ g.deadline }}</p>
+        </div>
+        <div class="donut">
+          <svg viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="26" class="track" />
+            <circle cx="32" cy="32" r="26" class="ring" [style.stroke]="g.color"
+              [style.stroke-dasharray]="dash(g) + ' 163.36'" />
+          </svg>
+          <span class="pct">{{ percent(g) }}%</span>
+        </div>
+      </div>
+      <div class="bar"><div class="fill" [style.width.%]="percent(g)" [style.background]="g.color"></div></div>
+    </a>
+  }
+
+  <section class="chart-card">
+    <h3>Setoran 6 Bulan Terakhir</h3>
+    <div class="chart">
+      @for (m of monthly(); track m.month; let i = $index) {
+        <div class="col">
+          <span class="val">{{ short(m.amount) }}</span>
+          <div class="colbar" [style.height.%]="barHeight(m.amount)" [style.animation-delay]="(i * 0.1) + 's'"></div>
+          <span class="lbl">{{ m.month }}</span>
+        </div>
+      }
+    </div>
+  </section>
+</main>
+
+<button class="fab">+ Goal Baru</button>
