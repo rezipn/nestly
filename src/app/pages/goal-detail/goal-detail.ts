@@ -1,8 +1,7 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { fetchGoalById, fetchContributionsByGoal, insertContribution, deleteGoal, deleteContribution, GoalRow, ContributionRow } from '../../supabase';
-
+import { fetchGoalById, fetchContributionsByGoal, insertContribution, deleteGoal, deleteContribution, fetchPeople, GoalRow, ContributionRow, PersonRow } from '../../supabase';
 
 @Component({
   selector: 'app-goal-detail',
@@ -18,24 +17,27 @@ export class GoalDetail implements OnInit {
   goalId = Number(this.route.snapshot.paramMap.get('id'));
   goal = signal<GoalRow | null>(null);
   contributions = signal<ContributionRow[]>([]);
+  people = signal<PersonRow[]>([]);
   saving = signal(false);
 
   form = this.fb.group({
   who: ['Rezi', Validators.required],
   amount: ['', Validators.required],
   note: [''],
-  });
-
+});
+  
   async ngOnInit() { await this.load(); }
 
   async load() {
-    const [goal, contributions] = await Promise.all([
-      fetchGoalById(this.goalId),
-      fetchContributionsByGoal(this.goalId),
-    ]);
-    this.goal.set(goal);
-    this.contributions.set(contributions);
-  }
+  this.people.set(await fetchPeople());
+  if (this.people().length) this.form.patchValue({ who: this.people()[0].name });
+  const [goal, contributions] = await Promise.all([
+    fetchGoalById(this.goalId),
+    fetchContributionsByGoal(this.goalId),
+  ]);
+  this.goal.set(goal);
+  this.contributions.set(contributions);
+}
 
   saved() { return this.contributions().reduce((s, c) => s + c.amount, 0); }
   percent() {

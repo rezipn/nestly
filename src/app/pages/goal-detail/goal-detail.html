@@ -12,9 +12,8 @@
       <h2>Tambah Setoran</h2>
       <label>Siapa?
         <select formControlName="who">
-          <option>Rezi</option>
-          <option>Pasangan</option>
-        </select>
+  @for (p of people(); track p.id) { <option [value]="p.name">{{ p.name }}</option> }
+</select>
       </label>
         <label>Nominal
             <input type="text" inputmode="numeric" formControlName="amount" placeholder="500.000" (input)="formatAmount($event)">

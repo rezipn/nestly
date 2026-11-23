@@ -1,0 +1,28 @@
+<main class="wrap">
+  <h1>Kelola Orang</h1>
+  <p class="sub">Nama-nama yang muncul di pilihan "Siapa".</p>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="card">
+    <label>{{ editingId() ? 'Edit Nama' : 'Tambah Orang' }}
+      <input type="text" formControlName="name" placeholder="Nama">
+    </label>
+    <button type="submit" class="save" [disabled]="form.invalid || saving()">
+      {{ saving() ? 'Menyimpan…' : (editingId() ? 'Simpan Perubahan' : 'Tambah') }}
+    </button>
+    @if (editingId()) {
+      <button type="button" class="cancel" (click)="cancelEdit()">Batal</button>
+    }
+  </form>
+
+  @if (loading()) { <p class="loading">Memuat data…</p> }
+
+  <section class="list">
+    @for (p of people(); track p.id; let i = $index) {
+      <article class="row" [style.animation-delay]="(i * 0.06) + 's'">
+        <p class="name">{{ p.name }}</p>
+        <button class="edit" (click)="edit(p)">Edit</button>
+        <button class="del" (click)="remove(p)">✕</button>
+      </article>
+    }
+  </section>
+</main>

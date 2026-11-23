@@ -14,12 +14,12 @@
           @for (c of categories[type()]; track c) { <option [value]="c">{{ c }}</option> }
         </select>
       </label>
-      <label>Siapa
-        <select formControlName="who">
-          <option value="Rezi">Rezi</option>
-          <option value="Pasangan">Pasangan</option>
-        </select>
-      </label>
+      <label>Siapa <a class="manage" routerLink="/orang">Kelola</a>
+  <select formControlName="who">
+    @for (p of people(); track p.id) { <option [value]="p.name">{{ p.name }}</option> }
+  </select>
+</label>
+
       <label>Nominal (Rp)
         <input type="text" inputmode="numeric" formControlName="amount" placeholder="50.000" (input)="formatAmount($event)">
       </label>
@@ -51,3 +51,4 @@
     }
   </section>
 </main>
+

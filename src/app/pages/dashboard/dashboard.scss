@@ -32,3 +32,8 @@ h1 { margin: 0; font-size: 28px; }
 .personrow:last-child { border-bottom: 0; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes barUp { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.person-card { border: 1px solid #f1e9db; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fff; }
+.person-card:last-child { margin-bottom: 0; }
+.person-head { display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 4px; }
+.person-total { color: #bc6c25; font-weight: 700; font-size: 14px; }
+.person-income { margin: 0 0 12px; color: #5b8e7d; font-size: 13px; font-weight: 600; }

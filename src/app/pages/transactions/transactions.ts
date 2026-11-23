@@ -1,10 +1,11 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { fetchTransactions, insertTransaction, deleteTransaction, TransactionRow } from '../../supabase';
+import { fetchTransactions, insertTransaction, deleteTransaction, fetchPeople, TransactionRow, PersonRow } from '../../supabase';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-transactions',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './transactions.html',
   styleUrl: './transactions.scss'
 })
@@ -27,8 +28,6 @@ export class Transactions implements OnInit {
     amount: ['', Validators.required],
     note: [''],
   });
-
-  async ngOnInit() { await this.load(); }
 
   async load() {
     this.items.set(await fetchTransactions());
@@ -76,4 +75,13 @@ export class Transactions implements OnInit {
 
   rupiah(n: number) { return 'Rp' + n.toLocaleString('id-ID'); }
   dateOnly(s: string) { return s.slice(0, 10); }
+
+  people = signal<PersonRow[]>([]);
+
+async ngOnInit() {
+  this.people.set(await fetchPeople());
+  if (this.people().length) this.form.patchValue({ who: this.people()[0].name });
+  await this.load();
+}
+
 }

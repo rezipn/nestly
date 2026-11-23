@@ -15,6 +15,7 @@ export class Dashboard implements OnInit {
   byCategory = signal<{ category: string; amount: number }[]>([]);
   byPerson = signal<{ who: string; amount: number }[]>([]);
   monthly = signal<{ month: string; income: number; expense: number }[]>([]);
+  personDetails = signal<{ who: string; income: number; expense: number; categories: { category: string; amount: number }[] }[]>([]);
 
   async ngOnInit() {
     const [tx, goals, contributions] = await Promise.all([
@@ -39,6 +40,19 @@ export class Dashboard implements OnInit {
     tx.filter(t => t.type === 'expense' && inMonth(t.created_at))
       .forEach(t => personMap.set(t.who, (personMap.get(t.who) || 0) + t.amount));
     this.byPerson.set([...personMap.entries()].map(([who, amount]) => ({ who, amount })));
+
+    const peopleNames = [...new Set(tx.map(t => t.who))];
+this.personDetails.set(peopleNames.map(who => {
+  const mine = tx.filter(t => t.who === who && inMonth(t.created_at));
+  const catMap2 = new Map<string, number>();
+  mine.filter(t => t.type === 'expense').forEach(t => catMap2.set(t.category, (catMap2.get(t.category) || 0) + t.amount));
+  return {
+    who,
+    income: mine.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0),
+    expense: mine.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0),
+    categories: [...catMap2.entries()].map(([category, amount]) => ({ category, amount })).sort((a, b) => b.amount - a.amount),
+  };
+}));
 
     this.monthly.set(this.last6Months(tx));
     this.loading.set(false);
@@ -71,4 +85,9 @@ export class Dashboard implements OnInit {
   }
   rupiah(n: number) { return 'Rp' + n.toLocaleString('id-ID'); }
   short(n: number) { return n >= 1000000 ? (n / 1000000).toFixed(1).replace('.0', '') + 'jt' : (n / 1000) + 'rb'; }
+  personCatWidth(cats: { amount: number }[], amount: number) {
+  const max = Math.max(...cats.map(c => c.amount), 1);
+  return Math.round((amount / max) * 100);
+}
+
 }

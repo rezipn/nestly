@@ -59,4 +59,27 @@
       @if (!loading()) { <p class="empty">Belum ada data.</p> }
     }
   </section>
+  <section class="card">
+  <h3>Detail per Orang — Bulan Ini</h3>
+  @for (p of personDetails(); track p.who) {
+    <article class="person-card">
+      <div class="person-head">
+        <strong>{{ p.who }}</strong>
+        <span class="person-total">Keluar {{ rupiah(p.expense) }}</span>
+      </div>
+      @if (p.income) { <p class="person-income">Masuk {{ rupiah(p.income) }}</p> }
+      @for (c of p.categories; track c.category) {
+        <div class="catrow">
+          <div class="cathead"><span>{{ c.category }}</span><span>{{ rupiah(c.amount) }}</span></div>
+          <div class="bar"><div class="fill" [style.width.%]="personCatWidth(p.categories, c.amount)"></div></div>
+        </div>
+      } @empty {
+        <p class="empty">Belum ada pengeluaran bulan ini.</p>
+      }
+    </article>
+  } @empty {
+    @if (!loading()) { <p class="empty">Belum ada data transaksi.</p> }
+  }
+</section>
+
 </main>

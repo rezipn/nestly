@@ -33,8 +33,6 @@
 .colbar { width: 100%; max-width: 36px; background: linear-gradient(180deg, #7fb069, #5b8e7d); border-radius: 8px 8px 4px 4px; transform-origin: bottom; animation: barUp .9s ease both; }
 .val { font-size: 11px; font-weight: 700; color: #5b8e7d; }
 .lbl { font-size: 11px; color: #8a7a68; }
-.fab { position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px; background: #2b2118; color: #faf6f0; border: 0; border-radius: 999px; padding: 14px 22px; font-size: 15px; box-shadow: 0 10px 24px rgba(43,33,24,.3); transition: transform .2s ease; }
-.fab:hover { transform: translateX(-50%) scale(1.04); }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes grow { from { width: 0; } }
 @keyframes ringIn { from { stroke-dasharray: 0 163.36; } }
@@ -53,6 +51,11 @@
 @keyframes sway { 0%,100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
 
 .fab {
-  bottom: 86px; /* sebelumnya 24px */
-  .fab { text-decoration: none; }
+  position: fixed; right: 20px; bottom: 86px;
+  background: #2b2118; color: #faf6f0; border: 0; border-radius: 999px;
+  padding: 14px 22px; font-size: 15px; text-decoration: none;
+  box-shadow: 0 10px 24px rgba(43,33,24,.3); transition: transform .2s ease;
 }
+.fab:hover { transform: scale(1.04); }
+
+.people-link { margin-left: 8px; font-size: 12px; font-weight: 600; color: #5b8e7d; text-decoration: none; border: 1px solid #e5dccb; border-radius: 999px; padding: 6px 14px; }

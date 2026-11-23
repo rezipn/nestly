@@ -1,0 +1,17 @@
+:host { display: block; font-family: 'Poppins', Arial, sans-serif; background: #faf6f0; min-height: 100vh; color: #2b2118; }
+.wrap { max-width: 560px; margin: 0 auto; padding: 28px 20px 110px; }
+h1 { margin: 0; font-size: 28px; }
+.sub { margin: 4px 0 20px; color: #8a7a68; font-size: 14px; }
+.card { background: #fffdf9; border: 1px solid #efe6da; border-radius: 20px; padding: 20px; box-shadow: 0 6px 22px rgba(90,70,40,.08); margin-bottom: 20px; animation: fadeUp .5s ease both; }
+label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; margin-bottom: 13px; }
+input { font-family: inherit; font-size: 15px; padding: 12px; border: 1px solid #e5dccb; border-radius: 12px; background: #fff; }
+.save { width: 100%; padding: 13px; border: 0; border-radius: 12px; background: #5b8e7d; color: #fff; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.save:disabled { opacity: .45; cursor: not-allowed; }
+.cancel { width: 100%; margin-top: 10px; padding: 11px; border: 1px solid #e5dccb; border-radius: 12px; background: #fff; font-family: inherit; font-size: 14px; font-weight: 600; color: #8a7a68; cursor: pointer; }
+.loading { color: #8a7a68; font-size: 14px; }
+.row { display: flex; align-items: center; gap: 10px; background: #fffdf9; border: 1px solid #efe6da; border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; animation: fadeUp .45s ease both; }
+.name { flex: 1; margin: 0; font-weight: 600; font-size: 15px; }
+.edit { background: none; border: 1px solid #e5dccb; border-radius: 999px; padding: 6px 14px; font-family: inherit; font-size: 12px; font-weight: 600; color: #5b8e7d; cursor: pointer; }
+.del { background: none; border: 0; color: #c0392b; font-size: 14px; cursor: pointer; opacity: .55; padding: 4px 6px; }
+.del:hover { opacity: 1; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }

@@ -113,3 +113,26 @@ export async function deleteTransaction(id: number) {
   const { error } = await supabase.from('transactions').delete().eq('id', id);
   if (error) throw error;
 }
+
+export interface PersonRow { id: number; name: string; created_at: string; }
+
+export async function fetchPeople() {
+  const { data, error } = await supabase.from('people').select('*').order('id');
+  if (error) throw error;
+  return data as PersonRow[];
+}
+
+export async function insertPerson(name: string) {
+  const { error } = await supabase.from('people').insert({ name });
+  if (error) throw error;
+}
+
+export async function updatePerson(id: number, name: string) {
+  const { error } = await supabase.from('people').update({ name }).eq('id', id);
+  if (error) throw error;
+}
+
+export async function deletePerson(id: number) {
+  const { error } = await supabase.from('people').delete().eq('id', id);
+  if (error) throw error;
+}
