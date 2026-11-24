@@ -24,13 +24,15 @@
   <section class="list">
     @for (p of people(); track p.id) {
       <article class="row">
-        <div class="row-main">
-          <p class="cat">{{ p.name }}</p>
-          <p class="meta">Saldo awal: {{ rupiah(p.balance) }}</p>
-        </div>
-        <button class="edit" (click)="edit(p)">Edit</button>
-        <button class="del" (click)="remove(p.id)">✕</button>
-      </article>
+  <div class="row-main">
+    <p class="cat">{{ p.name }}</p>
+    <p class="meta">Saldo awal: {{ rupiah(p.balance) }}</p>
+  </div>
+  <div class="actions">
+    <button class="edit" (click)="edit(p)">Edit</button>
+    <button class="del" (click)="remove(p.id)">✕</button>
+  </div>
+</article>
     } @empty {
       <p class="empty">Belum ada orang.</p>
     }
