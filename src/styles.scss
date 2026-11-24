@@ -1,1 +1,41 @@
-body { margin: 0; font-family: 'Poppins', Arial, sans-serif; }
+body {
+  background: linear-gradient(120deg, #f9dcc0, #cfe3d2, #f7c9a8, #d8e8d0);
+  background-size: 300% 300%;
+  animation: bgShift 6s ease-in-out infinite;
+  background-attachment: fixed;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: .65;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  width: 360px; height: 360px;
+  background: #9ecfa8;
+  opacity: .8;
+}
+
+body::after {
+  width: 320px; height: 320px;
+  background: #f0b27a;
+  opacity: .8;
+}
+
+@keyframes bgShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes floatBlob {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(70px, -50px) scale(1.25); }
+}
+
+app-root { position: relative; z-index: 1; display: block; }
